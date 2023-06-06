@@ -91,24 +91,32 @@ func selectInstance(c *cli.Context) (string, error) {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("Name            : %s\nArchitecture    : %s\nInstanceType    : %s\nInstanceID      : %s\nInstanceProfile : %s\nKeyName         : %s\nPrivateIP       : %s\nState           : %s\n",
+			return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
+				"Name",
 				ins[i].nameTag,
+				"Architecture",
 				ins[i].architecture,
+				"InstanceType",
 				ins[i].instanceType,
+				"InstanceID",
 				ins[i].instanceID,
+				"InstanceProfile",
 				func(p string) string {
 					if p == "" {
 						return "<None>"
 					}
 					return strings.Split(ins[i].instanceProfileArn, "/")[1]
 				}(ins[i].instanceProfileArn),
+				"KeyName",
 				func(k string) string {
 					if k == "" {
 						return "<None>"
 					}
 					return k
 				}(ins[i].keyName),
+				"PrivateIP",
 				ins[i].privateIP,
+				"State",
 				ins[i].state,
 			)
 		},
