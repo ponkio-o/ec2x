@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -8,9 +9,19 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+var (
+	version  = ""
+	revision = ""
+)
+
 func main() {
+	cli.VersionPrinter = func(cCtx *cli.Context) {
+		fmt.Printf("v%s (%s)\n", cCtx.App.Version, revision)
+	}
+
 	app := &cli.App{
 		Name:        "ec2x",
+		Version:     version,
 		Description: "ec2x is connect to EC2 instance using SSM Session Manager",
 		Before:      app.New,
 		Commands: []*cli.Command{
