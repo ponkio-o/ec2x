@@ -78,7 +78,7 @@ func startSession(c *cli.Context, id string) error {
 }
 
 func selectInstance(c *cli.Context) (string, error) {
-	ins, err := getInstanceInfos(c)
+	ins, err := getInstanceInfo(c)
 	if err != nil {
 		return "", err
 	}
@@ -127,7 +127,7 @@ func selectInstance(c *cli.Context) (string, error) {
 	return ins[idx].instanceID, nil
 }
 
-func getInstanceInfos(c *cli.Context) ([]instanceInfo, error) {
+func getInstanceInfo(c *cli.Context) ([]instanceInfo, error) {
 	app := c.Context.Value(appCLI).(*App)
 	result, err := app.ec2.DescribeInstances(context.TODO(), &ec2.DescribeInstancesInput{
 		MaxResults: aws.Int32(150),
