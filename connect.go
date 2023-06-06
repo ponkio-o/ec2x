@@ -18,7 +18,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type instanceInfo struct {
+type EC2Instance struct {
 	architecture       string
 	instanceType       string
 	instanceID         string
@@ -35,7 +35,7 @@ type sessInfo struct {
 	TokenValue string
 }
 
-var instances = []instanceInfo{}
+var instances = []EC2Instance{}
 
 func ConnectToEC2Instance(c *cli.Context) error {
 	id, err := selectInstance(c)
@@ -127,7 +127,7 @@ func selectInstance(c *cli.Context) (string, error) {
 	return ins[idx].instanceID, nil
 }
 
-func getInstanceInfo(c *cli.Context) ([]instanceInfo, error) {
+func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 	app := c.Context.Value(appCLI).(*App)
 	result, err := app.ec2.DescribeInstances(context.TODO(), &ec2.DescribeInstancesInput{
 		MaxResults: aws.Int32(150),
@@ -138,7 +138,7 @@ func getInstanceInfo(c *cli.Context) ([]instanceInfo, error) {
 
 	for _, v := range result.Reservations {
 		if aws.ToString((*string)(&v.Instances[0].State.Name)) == "running" {
-			instances = append(instances, instanceInfo{
+			instances = append(instances, EC2Instance{
 				architecture: aws.ToString((*string)(&v.Instances[0].Architecture)),
 				instanceType: aws.ToString((*string)(&v.Instances[0].InstanceType)),
 				instanceID:   aws.ToString(v.Instances[0].InstanceId),
