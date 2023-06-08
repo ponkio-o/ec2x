@@ -10,13 +10,13 @@ import (
 )
 
 var (
-	version  = ""
-	revision = ""
+	version = ""
+	commit  = ""
 )
 
 func main() {
 	cli.VersionPrinter = func(cCtx *cli.Context) {
-		fmt.Printf("v%s (%s)\n", cCtx.App.Version, revision)
+		fmt.Printf("v%s (%s)\n", cCtx.App.Version, commit)
 	}
 
 	app := &cli.App{
