@@ -1,0 +1,21 @@
+project_name: ec2x
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+builds:
+  - binary: ec2x
+    main: cmd/main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+
+archives:
+  - format: tar.gz
+    name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
