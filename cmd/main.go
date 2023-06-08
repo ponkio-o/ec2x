@@ -20,10 +20,10 @@ func main() {
 	}
 
 	app := &cli.App{
-		Name:        "ec2x",
-		Version:     version,
-		Description: "ec2x is connect to EC2 instance using SSM Session Manager",
-		Before:      app.New,
+		Name:    "ec2x",
+		Usage:   "ec2x is connect to EC2 instance using SSM Session Manager",
+		Version: version,
+		Before:  app.New,
 		Commands: []*cli.Command{
 			{
 				Name:   "connect",
