@@ -12,3 +12,4 @@ registries:
 packages:
 - name: golangci/golangci-lint@v1.53.2
 - name: goreleaser/goreleaser@v1.18.2
+- name: Songmu/tagpr@v1.1.2
