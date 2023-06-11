@@ -40,8 +40,8 @@ jobs:
         with:
           aqua_version: v2.8.0
 
-      - name: Push tag
-        run: git push origin main --tag
+      - name: Get tag
+        run: git pull --tags
 
       - name: Run goreleaser
         run: goreleaser release --clean
