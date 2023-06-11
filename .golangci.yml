@@ -1,0 +1,5 @@
+run:
+  timeout: 5m
+  issue-exit-code: 1
+  tests: true
+  allow-parallel-runners: true
