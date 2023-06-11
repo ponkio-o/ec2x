@@ -1,0 +1,45 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tagpr.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install aqua
+        uses: aquaproj/aqua-installer@v2.0.2
+        with:
+          aqua_version: v2.8.0
+
+      - name: Run tagpr
+        id: tagpr
+        run: tagpr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    runs-on: ubuntu-latest
+    if: needs.tagpr.outputs.tag != ''
+    outputs:
+      tag: ${{ steps.tagpr.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install aqua
+        uses: aquaproj/aqua-installer@v2.0.2
+        with:
+          aqua_version: v2.8.0
+
+      - name: Run goreleaser
+        run: goreleaser release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
