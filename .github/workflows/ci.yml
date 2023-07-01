@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Install aqua
-        uses: aquaproj/aqua-installer@v2.0.2
+        uses: aquaproj/aqua-installer@v2.1.2
         with:
           aqua_version: v2.8.0
 
@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Install aqua
-        uses: aquaproj/aqua-installer@v2.0.2
+        uses: aquaproj/aqua-installer@v2.1.2
         with:
           aqua_version: v2.8.0
 
