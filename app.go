@@ -2,10 +2,12 @@ package app
 
 import (
 	"context"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/hairyhenderson/go-which"
 	"github.com/urfave/cli/v2"
 )
 
@@ -25,6 +27,11 @@ func New(c *cli.Context) error {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		return err
+	}
+
+	// check session-manager-plugin
+	if !which.Found("session-manager-plugin") {
+		return errors.New("you need to install session-manager-plugin command")
 	}
 
 	app := &App{
