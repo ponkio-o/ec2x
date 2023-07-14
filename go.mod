@@ -3,10 +3,11 @@ module github.com/ponkio-o/ec2x
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.18.1
+	github.com/aws/aws-sdk-go-v2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.103.0
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.36.7
+	github.com/hairyhenderson/go-which v0.2.0
 	github.com/ktr0731/go-fuzzyfinder v0.7.0
 	github.com/urfave/cli/v2 v2.25.7
 )
@@ -25,7 +26,6 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/gdamore/tcell/v2 v2.5.3 // indirect
-	github.com/hairyhenderson/go-which v0.2.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/ktr0731/go-ansisgr v0.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
