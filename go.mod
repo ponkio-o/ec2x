@@ -3,7 +3,7 @@ module github.com/ponkio-o/ec2x
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.20.0
+	github.com/aws/aws-sdk-go-v2 v1.20.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.32
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.110.0
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.37.1
@@ -22,7 +22,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.13.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.15.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.21.1 // indirect
-	github.com/aws/smithy-go v1.14.0 // indirect
+	github.com/aws/smithy-go v1.14.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/gdamore/tcell/v2 v2.5.3 // indirect
