@@ -4,6 +4,13 @@ ec2x is cli tool that connect to Amazon EC2 instance easily.
 ## Install
 You can download binary from GitHub Release or build from source. You also need to install `session-manager-plugin` command. If you need more information, please refer to [official document](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html).
 
+### aqua
+This tool supports installation by [aquaproj/aqua](https://github.com/aquaproj/aqua)
+
+```console
+$ aqua g -i ponkio-o/ec2x
+```
+
 ### GitHub Release
 Go to [GitHub Release](https://github.com/ponkio-o/ec2x/releases)
 
