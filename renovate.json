@@ -4,10 +4,20 @@
     "config:base",
     "github>aquaproj/aqua-renovate-config#1.5.2"
   ],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "matchPackageNames": ["github.com/aws/aws-sdk-go-v2"],
       "extends": ["schedule:monthly"]
+    },
+    {
+      "matchPackageNames": ["aquaproj/aqua-registry"],
+      "minor": {
+        "automerge": true
+      },
+      "patch": {
+        "automerge": true
+      }
     }
   ]
 }
