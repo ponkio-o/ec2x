@@ -7,7 +7,7 @@
   "platformAutomerge": true,
   "packageRules": [
     {
-      "matchPackageNames": ["github.com/aws/aws-sdk-go-v2"],
+      "matchPackagePatterns": ["^github.com/aws/aws-sdk-go-v2"],
       "extends": ["schedule:monthly"]
     },
     {
