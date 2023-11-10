@@ -20,12 +20,6 @@ jobs:
         with:
           aqua_version: v2.16.3
 
-      - name: Set up Go
-        uses: actions/setup-go@v4.1.0
-        with:
-          go-version-file: go.mod
-          cache: true
-
       - name: Run golangci-lint
         run: golangci-lint run
 
