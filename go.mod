@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.45.0
 	github.com/hairyhenderson/go-which v0.2.0
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
-	github.com/urfave/cli/v2 v2.25.7
+	github.com/urfave/cli/v2 v2.27.1
 )
 
 require (
