@@ -1,6 +1,6 @@
 module github.com/ponkio-o/ec2x
 
-go 1.21.6
+go 1.22.1
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.24.1
