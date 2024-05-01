@@ -12,7 +12,7 @@
       "groupName": "golang"
     },
     {
-      "matchPackageNames": ["patch", "minor"],
+      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true
     }
   ]
