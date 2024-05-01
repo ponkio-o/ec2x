@@ -8,13 +8,12 @@
   "platformAutomerge": true,
   "packageRules": [
     {
-      "matchPackageNames": ["aquaproj/aqua-registry"],
-      "minor": {
-        "automerge": true
-      },
-      "patch": {
-        "automerge": true
-      }
+      "matchPackageNames": ["golang/go", "go", "golang"],
+      "groupName": "golang"
+    },
+    {
+      "matchPackageNames": ["patch", "minor"],
+      "automerge": true
     }
   ]
 }
