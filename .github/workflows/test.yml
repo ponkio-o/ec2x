@@ -10,13 +10,15 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Install aqua
-        uses: aquaproj/aqua-installer@v3.0.0
+        uses: aquaproj/aqua-installer@4551ec64e21bf0f557c2525135ff0bd2cba40ec7 # v3.0.0
         with:
           aqua_version: v2.25.2
 
@@ -25,6 +27,7 @@ jobs:
 
   status-check:
     runs-on: ubuntu-latest
+    permissions: {}
     needs: [lint]
     if: failure()
 
