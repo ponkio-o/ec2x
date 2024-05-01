@@ -12,7 +12,7 @@ jobs:
       tag: ${{ steps.tagpr.outputs.tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
 
       - name: Install aqua
         uses: aquaproj/aqua-installer@v3.0.0
@@ -40,7 +40,7 @@ jobs:
       tag: ${{ steps.tagpr.outputs.tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
 
       - name: Install aqua
         uses: aquaproj/aqua-installer@v3.0.0
