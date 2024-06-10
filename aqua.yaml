@@ -13,4 +13,4 @@ packages:
 - name: golangci/golangci-lint@v1.57.2
 - name: goreleaser/goreleaser@v2.0.0
 - name: Songmu/tagpr@v1.2.0
-- name: golang/go@go1.22.3
+- name: golang/go@go1.22.4
