@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -19,14 +18,14 @@ import (
 )
 
 type EC2Instance struct {
-	architecture       string
-	instanceType       string
-	instanceID         string
-	instanceProfileArn string
-	keyName            string
-	privateIP          string
-	state              string
-	nameTag            string
+	architecture    types.ArchitectureValues
+	instanceType    types.InstanceType
+	instanceID      string
+	instanceProfile string
+	keyName         string
+	privateIP       string
+	state           types.InstanceStateName
+	nameTag         string
 }
 
 type sessInfo struct {
@@ -34,8 +33,6 @@ type sessInfo struct {
 	StreamUrl  string
 	TokenValue string
 }
-
-var instances = []EC2Instance{}
 
 func ConnectToEC2Instance(c *cli.Context) error {
 	id, err := selectInstance(c)
@@ -101,19 +98,9 @@ func selectInstance(c *cli.Context) (string, error) {
 				"InstanceID",
 				ins[i].instanceID,
 				"InstanceProfile",
-				func(p string) string {
-					if p == "" {
-						return "<None>"
-					}
-					return strings.Split(ins[i].instanceProfileArn, "/")[1]
-				}(ins[i].instanceProfileArn),
+				ins[i].instanceProfile,
 				"KeyName",
-				func(k string) string {
-					if k == "" {
-						return "<None>"
-					}
-					return k
-				}(ins[i].keyName),
+				ins[i].keyName,
 				"PrivateIP",
 				ins[i].privateIP,
 				"State",
@@ -129,36 +116,26 @@ func selectInstance(c *cli.Context) (string, error) {
 
 func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 	app := c.Context.Value(appCLI).(*App)
-	result, err := app.ec2.DescribeInstances(context.TODO(), &ec2.DescribeInstancesInput{
+	paginator := ec2.NewDescribeInstancesPaginator(app.ec2, &ec2.DescribeInstancesInput{
 		MaxResults: aws.Int32(150),
 	})
-	if err != nil {
-		return nil, err
-	}
 
-	for _, v := range result.Reservations {
-		if aws.ToString((*string)(&v.Instances[0].State.Name)) == "running" {
+	var instances []EC2Instance
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(context.Background())
+		if err != nil {
+			return nil, err
+		}
+		for _, rsv := range page.Reservations {
 			instances = append(instances, EC2Instance{
-				architecture: aws.ToString((*string)(&v.Instances[0].Architecture)),
-				instanceType: aws.ToString((*string)(&v.Instances[0].InstanceType)),
-				instanceID:   aws.ToString(v.Instances[0].InstanceId),
-				instanceProfileArn: func(p types.Instance) string {
-					if p.IamInstanceProfile == nil {
-						return ""
-					}
-					return aws.ToString(p.IamInstanceProfile.Arn)
-				}(v.Instances[0]),
-				keyName:   aws.ToString(v.Instances[0].KeyName),
-				privateIP: aws.ToString(v.Instances[0].PrivateIpAddress),
-				state:     aws.ToString((*string)(&v.Instances[0].State.Name)),
-				nameTag: func(t []types.Tag) string {
-					for _, v := range t {
-						if aws.ToString(v.Key) == "Name" {
-							return aws.ToString(v.Value)
-						}
-					}
-					return ""
-				}(v.Instances[0].Tags),
+				architecture:    rsv.Instances[0].Architecture,
+				instanceType:    rsv.Instances[0].InstanceType,
+				instanceID:      aws.ToString(rsv.Instances[0].InstanceId),
+				instanceProfile: extractInstanceProfile(rsv.Instances[0].IamInstanceProfile),
+				keyName:         extractKeyName(rsv.Instances[0].KeyName),
+				privateIP:       aws.ToString(rsv.Instances[0].PrivateIpAddress),
+				state:           rsv.Instances[0].State.Name,
+				nameTag:         extractNameTag(rsv.Instances[0].Tags),
 			})
 		}
 	}
