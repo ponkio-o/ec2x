@@ -127,6 +127,10 @@ func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 			return nil, err
 		}
 		for _, rsv := range page.Reservations {
+			// Skip if instance is not running
+			if rsv.Instances[0].State.Name != types.InstanceStateNameRunning {
+				continue
+			}
 			instances = append(instances, EC2Instance{
 				Architecture:    rsv.Instances[0].Architecture,
 				InstanceType:    rsv.Instances[0].InstanceType,
