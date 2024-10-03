@@ -18,14 +18,14 @@ import (
 )
 
 type EC2Instance struct {
-	architecture    types.ArchitectureValues
-	instanceType    types.InstanceType
-	instanceID      string
-	instanceProfile string
-	keyName         string
-	privateIP       string
-	state           types.InstanceStateName
-	nameTag         string
+	Architecture    types.ArchitectureValues
+	InstanceType    types.InstanceType
+	InstanceID      string
+	InstanceProfile string
+	KeyName         string
+	PrivateIP       string
+	State           types.InstanceStateName
+	NameTag         string
 }
 
 type sessInfo struct {
@@ -82,7 +82,7 @@ func selectInstance(c *cli.Context) (string, error) {
 	idx, err := fuzzyfinder.Find(
 		ins,
 		func(i int) string {
-			return fmt.Sprintf("%s - %s (%s)", ins[i].instanceID, ins[i].nameTag, ins[i].privateIP)
+			return fmt.Sprintf("%s - %s (%s)", ins[i].InstanceID, ins[i].NameTag, ins[i].PrivateIP)
 		},
 		fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {
 			if i == -1 {
@@ -90,28 +90,28 @@ func selectInstance(c *cli.Context) (string, error) {
 			}
 			return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
 				"Name",
-				ins[i].nameTag,
+				ins[i].NameTag,
 				"Architecture",
-				ins[i].architecture,
+				ins[i].Architecture,
 				"InstanceType",
-				ins[i].instanceType,
+				ins[i].InstanceType,
 				"InstanceID",
-				ins[i].instanceID,
+				ins[i].InstanceID,
 				"InstanceProfile",
-				ins[i].instanceProfile,
+				ins[i].InstanceProfile,
 				"KeyName",
-				ins[i].keyName,
+				ins[i].KeyName,
 				"PrivateIP",
-				ins[i].privateIP,
+				ins[i].PrivateIP,
 				"State",
-				ins[i].state,
+				ins[i].State,
 			)
 		},
 		))
 	if err != nil {
 		log.Fatal(err)
 	}
-	return ins[idx].instanceID, nil
+	return ins[idx].InstanceID, nil
 }
 
 func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
@@ -127,15 +127,19 @@ func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 			return nil, err
 		}
 		for _, rsv := range page.Reservations {
+			// Skip if instance is not running
+			if rsv.Instances[0].State.Name != types.InstanceStateNameRunning {
+				continue
+			}
 			instances = append(instances, EC2Instance{
-				architecture:    rsv.Instances[0].Architecture,
-				instanceType:    rsv.Instances[0].InstanceType,
-				instanceID:      aws.ToString(rsv.Instances[0].InstanceId),
-				instanceProfile: extractInstanceProfile(rsv.Instances[0].IamInstanceProfile),
-				keyName:         extractKeyName(rsv.Instances[0].KeyName),
-				privateIP:       aws.ToString(rsv.Instances[0].PrivateIpAddress),
-				state:           rsv.Instances[0].State.Name,
-				nameTag:         extractNameTag(rsv.Instances[0].Tags),
+				Architecture:    rsv.Instances[0].Architecture,
+				InstanceType:    rsv.Instances[0].InstanceType,
+				InstanceID:      aws.ToString(rsv.Instances[0].InstanceId),
+				InstanceProfile: extractInstanceProfile(rsv.Instances[0].IamInstanceProfile),
+				KeyName:         extractKeyName(rsv.Instances[0].KeyName),
+				PrivateIP:       aws.ToString(rsv.Instances[0].PrivateIpAddress),
+				State:           rsv.Instances[0].State.Name,
+				NameTag:         extractNameTag(rsv.Instances[0].Tags),
 			})
 		}
 	}
