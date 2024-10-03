@@ -34,8 +34,6 @@ type sessInfo struct {
 	TokenValue string
 }
 
-var instances = []EC2Instance{}
-
 func ConnectToEC2Instance(c *cli.Context) error {
 	id, err := selectInstance(c)
 	if err != nil {
