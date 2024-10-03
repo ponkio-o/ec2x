@@ -8,19 +8,19 @@ import (
 )
 
 func extractInstanceProfile(p *types.IamInstanceProfile) string {
-	if p == nil {
-		return "<No instance profile>"
+	if p != nil {
+		return strings.Split(aws.ToString(p.Arn), "/")[1]
 	}
 
-	return strings.Split(aws.ToString(p.Arn), "/")[1]
+	return "<No instance profile>"
 }
 
 func extractKeyName(k *string) string {
-	if aws.ToString(k) == "" {
-		return "<No key name>"
+	if aws.ToString(k) != "" {
+		return aws.ToString(k)
 	}
 
-	return aws.ToString(k)
+	return "<No key name>"
 }
 
 func extractNameTag(tags []types.Tag) string {
