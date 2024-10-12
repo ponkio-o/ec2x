@@ -1,10 +1,17 @@
 # ec2x
+
 ec2x is cli tool that connect to Amazon EC2 instance easily.
 
 ## Install
+
 You can download binary from GitHub Release or build from source. You also need to install `session-manager-plugin` command. If you need more information, please refer to [official document](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html).
 
+> [!NOTE]  
+> If you are using macOS, you can install `session-manager-plugin` command by [aquaproj/aqua](https://github.com/aquaproj/aqua).
+> `aqua g -i aws/session-manager-plugin`
+
 ### aqua
+
 This tool supports installation by [aquaproj/aqua](https://github.com/aquaproj/aqua)
 
 ```console
@@ -12,15 +19,18 @@ $ aqua g -i ponkio-o/ec2x
 ```
 
 ### GitHub Release
+
 Go to [GitHub Release](https://github.com/ponkio-o/ec2x/releases)
 
 ### Build from source
+
 ```console
 $ go build -o ec2x ./cmd/main.go
 $ mv ec2x /usr/local/bin/ec2x
 ```
 
 ## Usage
+
 ```console
 $ ec2x --help
 NAME:
@@ -38,6 +48,7 @@ GLOBAL OPTIONS:
 ```
 
 You can select EC2 instance with fuzzy finder. (using [ktr0731/go-fuzzyfinder](https://github.com/ktr0731/go-fuzzyfinder))
+
 ```console
 $ AWS_PROFILE=<your profile name>
 $ ec2x connect
