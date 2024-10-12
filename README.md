@@ -7,7 +7,7 @@ ec2x is cli tool that connect to Amazon EC2 instance easily.
 You can download binary from GitHub Release or build from source. You also need to install `session-manager-plugin` command. If you need more information, please refer to [official document](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html).
 
 > [!NOTE]  
-> If you are using macOS, you can install `session-manager-plugin` command by [aquaproj/aqua](https://github.com/aquaproj/aqua).
+> If you are using macOS, you can install `session-manager-plugin` command by [aquaproj/aqua](https://github.com/aquaproj/aqua).  
 > `aqua g -i aws/session-manager-plugin`
 
 ### aqua
