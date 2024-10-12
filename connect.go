@@ -128,16 +128,3 @@ func (app App) getInstanceInfo() ([]EC2Instance, error) {
 
 	return instances, nil
 }
-
-func genPreviewWindow(ins EC2Instance) string {
-	return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
-		"Name", ins.NameTag,
-		"Architecture", ins.Architecture,
-		"InstanceType", ins.InstanceType,
-		"InstanceID", ins.InstanceID,
-		"InstanceProfile", ins.InstanceProfile,
-		"KeyName", ins.KeyName,
-		"PrivateIP", ins.PrivateIP,
-		"State", ins.State,
-	)
-}
