@@ -28,7 +28,7 @@ func main() {
 			{
 				Name:   "connect",
 				Usage:  "Connect to EC2 instance with Session Manager",
-				Action: app.ConnectToEC2Instance,
+				Action: app.ConnectCommand,
 			},
 		},
 		DefaultCommand: "connect",
