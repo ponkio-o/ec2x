@@ -13,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	ssmt "github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/urfave/cli/v2"
 )
@@ -74,8 +75,38 @@ func (app App) startSession(id, region string) error {
 	return cmd.Run()
 }
 
+func (app App) listSSMManagedInstances() ([]string, error) {
+	paginator := ssm.NewDescribeInstanceInformationPaginator(app.SSM, &ssm.DescribeInstanceInformationInput{
+		Filters: []ssmt.InstanceInformationStringFilter{
+			{
+				Key:    aws.String("PingStatus"),
+				Values: []string{"Online"},
+			},
+		},
+	})
+
+	var managedInstances []string
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(context.Background())
+		if err != nil {
+			return nil, err
+		}
+
+		for _, ins := range page.InstanceInformationList {
+			managedInstances = append(managedInstances, aws.ToString(ins.InstanceId))
+		}
+	}
+
+	return managedInstances, nil
+}
+
 func (app App) selectInstance() (string, error) {
-	ins, err := app.getInstanceInfo()
+	managedInstances, err := app.listSSMManagedInstances()
+	if err != nil {
+		return "", err
+	}
+
+	ins, err := app.getInstanceInfo(managedInstances)
 	if err != nil {
 		return "", err
 	}
@@ -97,9 +128,15 @@ func (app App) selectInstance() (string, error) {
 	return ins[idx].InstanceID, nil
 }
 
-func (app App) getInstanceInfo() ([]EC2Instance, error) {
+func (app App) getInstanceInfo(managedInstances []string) ([]EC2Instance, error) {
 	paginator := ec2.NewDescribeInstancesPaginator(app.EC2, &ec2.DescribeInstancesInput{
-		MaxResults: aws.Int32(150),
+		InstanceIds: managedInstances,
+		Filters: []types.Filter{
+			{
+				Name:   aws.String("instance-state-name"),
+				Values: []string{string(types.InstanceStateNameRunning)},
+			},
+		},
 	})
 
 	var instances []EC2Instance
@@ -109,10 +146,6 @@ func (app App) getInstanceInfo() ([]EC2Instance, error) {
 			return nil, err
 		}
 		for _, rsv := range page.Reservations {
-			// Skip if instance is not running
-			if rsv.Instances[0].State.Name != types.InstanceStateNameRunning {
-				continue
-			}
 			instances = append(instances, EC2Instance{
 				Architecture:    rsv.Instances[0].Architecture,
 				InstanceType:    rsv.Instances[0].InstanceType,
