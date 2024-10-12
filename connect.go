@@ -28,19 +28,20 @@ type EC2Instance struct {
 	NameTag         string
 }
 
-type sessInfo struct {
+type SessInfo struct {
 	SessionID  string
 	StreamUrl  string
 	TokenValue string
 }
 
-func ConnectToEC2Instance(c *cli.Context) error {
-	id, err := selectInstance(c)
+func ConnectCommand(c *cli.Context) error {
+	app := c.Context.Value(appCLI).(*App)
+	id, err := app.selectInstance()
 	if err != nil {
 		return err
 	}
 
-	err = startSession(c, id)
+	err = app.startSession(id, app.Region)
 	if err != nil {
 		return err
 	}
@@ -48,23 +49,22 @@ func ConnectToEC2Instance(c *cli.Context) error {
 	return nil
 }
 
-func startSession(c *cli.Context, id string) error {
-	app := c.Context.Value(appCLI).(*App)
-	result, err := app.ssm.StartSession(context.TODO(), &ssm.StartSessionInput{
+func (app App) startSession(id, region string) error {
+	result, err := app.SSM.StartSession(context.TODO(), &ssm.StartSessionInput{
 		Target: aws.String(id),
 	})
 	if err != nil {
 		return err
 	}
 
-	sessi := sessInfo{
+	sessi := SessInfo{
 		SessionID:  aws.ToString(result.SessionId),
 		StreamUrl:  aws.ToString(result.StreamUrl),
 		TokenValue: aws.ToString(result.TokenValue),
 	}
 
 	sess, _ := json.Marshal(sessi)
-	cmd := exec.Command("session-manager-plugin", string(sess), app.region, "StartSession")
+	cmd := exec.Command("session-manager-plugin", string(sess), region, "StartSession")
 	signal.Ignore(os.Interrupt)
 	defer signal.Reset(os.Interrupt)
 	cmd.Stdout = os.Stdout
@@ -74,8 +74,8 @@ func startSession(c *cli.Context, id string) error {
 	return cmd.Run()
 }
 
-func selectInstance(c *cli.Context) (string, error) {
-	ins, err := getInstanceInfo(c)
+func (app App) selectInstance() (string, error) {
+	ins, err := app.getInstanceInfo()
 	if err != nil {
 		return "", err
 	}
@@ -97,9 +97,8 @@ func selectInstance(c *cli.Context) (string, error) {
 	return ins[idx].InstanceID, nil
 }
 
-func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
-	app := c.Context.Value(appCLI).(*App)
-	paginator := ec2.NewDescribeInstancesPaginator(app.ec2, &ec2.DescribeInstancesInput{
+func (app App) getInstanceInfo() ([]EC2Instance, error) {
+	paginator := ec2.NewDescribeInstancesPaginator(app.EC2, &ec2.DescribeInstancesInput{
 		MaxResults: aws.Int32(150),
 	})
 
@@ -132,21 +131,13 @@ func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 
 func genPreviewWindow(ins EC2Instance) string {
 	return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
-		"Name",
-		ins.NameTag,
-		"Architecture",
-		ins.Architecture,
-		"InstanceType",
-		ins.InstanceType,
-		"InstanceID",
-		ins.InstanceID,
-		"InstanceProfile",
-		ins.InstanceProfile,
-		"KeyName",
-		ins.KeyName,
-		"PrivateIP",
-		ins.PrivateIP,
-		"State",
-		ins.State,
+		"Name", ins.NameTag,
+		"Architecture", ins.Architecture,
+		"InstanceType", ins.InstanceType,
+		"InstanceID", ins.InstanceID,
+		"InstanceProfile", ins.InstanceProfile,
+		"KeyName", ins.KeyName,
+		"PrivateIP", ins.PrivateIP,
+		"State", ins.State,
 	)
 }

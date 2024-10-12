@@ -12,9 +12,9 @@ import (
 )
 
 type App struct {
-	ec2    *ec2.Client
-	ssm    *ssm.Client
-	region string
+	EC2    *ec2.Client
+	SSM    *ssm.Client
+	Region string
 }
 
 type appKey int
@@ -35,9 +35,9 @@ func New(c *cli.Context) error {
 	}
 
 	app := &App{
-		ec2:    ec2.NewFromConfig(cfg),
-		ssm:    ssm.NewFromConfig(cfg),
-		region: cfg.Region,
+		EC2:    ec2.NewFromConfig(cfg),
+		SSM:    ssm.NewFromConfig(cfg),
+		Region: cfg.Region,
 	}
 
 	c.Context = context.WithValue(c.Context, appCLI, app)
