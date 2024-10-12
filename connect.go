@@ -88,24 +88,7 @@ func selectInstance(c *cli.Context) (string, error) {
 			if i == -1 {
 				return ""
 			}
-			return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
-				"Name",
-				ins[i].NameTag,
-				"Architecture",
-				ins[i].Architecture,
-				"InstanceType",
-				ins[i].InstanceType,
-				"InstanceID",
-				ins[i].InstanceID,
-				"InstanceProfile",
-				ins[i].InstanceProfile,
-				"KeyName",
-				ins[i].KeyName,
-				"PrivateIP",
-				ins[i].PrivateIP,
-				"State",
-				ins[i].State,
-			)
+			return genPreviewWindow(ins[i])
 		},
 		))
 	if err != nil {
@@ -145,4 +128,25 @@ func getInstanceInfo(c *cli.Context) ([]EC2Instance, error) {
 	}
 
 	return instances, nil
+}
+
+func genPreviewWindow(ins EC2Instance) string {
+	return fmt.Sprintf("%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n%-16s: %s\n",
+		"Name",
+		ins.NameTag,
+		"Architecture",
+		ins.Architecture,
+		"InstanceType",
+		ins.InstanceType,
+		"InstanceID",
+		ins.InstanceID,
+		"InstanceProfile",
+		ins.InstanceProfile,
+		"KeyName",
+		ins.KeyName,
+		"PrivateIP",
+		ins.PrivateIP,
+		"State",
+		ins.State,
+	)
 }
