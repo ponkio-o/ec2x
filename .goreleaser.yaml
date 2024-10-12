@@ -6,7 +6,7 @@ before:
     - go generate ./...
 builds:
   - binary: ec2x
-    main: cmd/main.go
+    main: cmd/ec2x/main.go
     env:
       - CGO_ENABLED=0
     goos:
