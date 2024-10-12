@@ -1,6 +1,6 @@
 # ec2x
 
-ec2x is cli tool that connect to Amazon EC2 instance easily.
+`ec2x` is a CLI tool to connect to EC2 instance using SSS Session Manager.
 
 ## Install
 
