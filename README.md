@@ -69,3 +69,24 @@ $ ec2x connect
 > i-0bb0bade4d8cca310 - eks-worker-node (172.22.194.228)             │
   69/69                                                              │
 ```
+
+## Required IAM permissions
+
+The following IAM permissions are required to use this tool.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:StartSession",
+        "ssm:DescribeInstanceInformation",
+        "ec2:DescribeInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
