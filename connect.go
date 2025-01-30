@@ -52,9 +52,10 @@ func (app App) startSession(id, region string) error {
 		return err
 	}
 
+	sess, err := json.Marshal(result)
+	if err != nil {
+		return err
 	}
-
-	sess, _ := json.Marshal(sessi)
 	cmd := exec.Command("session-manager-plugin", string(sess), region, "StartSession")
 	signal.Ignore(os.Interrupt)
 	defer signal.Reset(os.Interrupt)
