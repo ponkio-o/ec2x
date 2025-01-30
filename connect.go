@@ -29,12 +29,6 @@ type EC2Instance struct {
 	NameTag         string
 }
 
-type SessInfo struct {
-	SessionID  string
-	StreamUrl  string
-	TokenValue string
-}
-
 func ConnectCommand(c *cli.Context) error {
 	app := c.Context.Value(appCLI).(*App)
 	id, err := app.selectInstance()
@@ -58,10 +52,6 @@ func (app App) startSession(id, region string) error {
 		return err
 	}
 
-	sessi := SessInfo{
-		SessionID:  aws.ToString(result.SessionId),
-		StreamUrl:  aws.ToString(result.StreamUrl),
-		TokenValue: aws.ToString(result.TokenValue),
 	}
 
 	sess, _ := json.Marshal(sessi)
