@@ -1,13 +1,15 @@
 module github.com/ponkio-o/ec2x
 
-go 1.22.1
+go 1.23
+
+toolchain go1.23.1
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.7
 	github.com/aws/aws-sdk-go-v2/config v1.28.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.198.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.56.2
-	github.com/hairyhenderson/go-which v0.2.0
+	github.com/hairyhenderson/go-which v0.2.2
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
 	github.com/urfave/cli/v2 v2.27.6
 )
@@ -35,7 +37,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.3 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/spf13/afero v1.3.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/term v0.5.0 // indirect
