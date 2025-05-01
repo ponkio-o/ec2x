@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.28.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.198.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.56.2
-	github.com/hairyhenderson/go-which v0.2.0
+	github.com/hairyhenderson/go-which v0.2.2
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
 	github.com/urfave/cli/v2 v2.27.6
 )
