@@ -1,15 +1,13 @@
 module github.com/ponkio-o/ec2x
 
-go 1.23
-
-toolchain go1.23.1
+go 1.25.0
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.7
 	github.com/aws/aws-sdk-go-v2/config v1.28.7
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.198.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.56.2
-	github.com/hairyhenderson/go-which v0.2.2
+	github.com/hairyhenderson/go-which v0.2.3
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
 	github.com/urfave/cli/v2 v2.27.7
 )
